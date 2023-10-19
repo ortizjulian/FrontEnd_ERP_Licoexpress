@@ -15,6 +15,7 @@ const Typography = Loadable(lazy(() => import('pages/components-overview/Typogra
 const Color = Loadable(lazy(() => import('pages/components-overview/Color')));
 const Shadow = Loadable(lazy(() => import('pages/components-overview/Shadow')));
 const AntIcons = Loadable(lazy(() => import('pages/components-overview/AntIcons')));
+const Proveedores = Loadable(lazy(() => import('pages/LicorExpress/Proveedores')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -54,6 +55,10 @@ const MainRoutes = {
     {
       path: 'icons/ant',
       element: <AntIcons />
+    },
+    {
+      path: 'Proveedores',
+      element: <Proveedores />
     }
   ]
 };

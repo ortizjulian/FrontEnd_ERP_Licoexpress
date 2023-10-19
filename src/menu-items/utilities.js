@@ -5,7 +5,8 @@ import {
   BarcodeOutlined,
   BgColorsOutlined,
   FontSizeOutlined,
-  LoadingOutlined
+  LoadingOutlined,
+  IdcardOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -15,7 +16,8 @@ const icons = {
   BarcodeOutlined,
   AntDesignOutlined,
   LoadingOutlined,
-  AppstoreAddOutlined
+  AppstoreAddOutlined,
+  IdcardOutlined
 };
 
 // ==============================|| MENU ITEMS - UTILITIES ||============================== //
@@ -53,6 +55,14 @@ const utilities = {
       url: '/icons/ant',
       icon: icons.AntDesignOutlined,
       breadcrumbs: false
+    },
+    {
+      id: 'util-proveedores',
+      title: 'Proveedores',
+      type: 'item',
+      url: '/proveedores',
+      icon: icons.IdcardOutlined,
+      breadcrumbs: true
     }
   ]
 };
