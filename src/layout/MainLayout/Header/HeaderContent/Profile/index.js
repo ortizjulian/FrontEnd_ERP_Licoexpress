@@ -24,10 +24,11 @@ import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 import ProfileTab from './ProfileTab';
 import SettingTab from './SettingTab';
-
+import { useNavigate } from 'react-router-dom';
 // assets
 import avatar1 from 'assets/images/users/avatar-1.png';
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import useLogin from 'services/login/login';
 
 // tab panel wrapper
 function TabPanel({ children, value, index, ...other }) {
@@ -55,9 +56,11 @@ function a11yProps(index) {
 
 const Profile = () => {
   const theme = useTheme();
-
+  const { logout } = useLogin();
+  const navigate = useNavigate();
   const handleLogout = async () => {
-    // logout
+    logout()
+    navigate('/dashboard');
   };
 
   const anchorRef = useRef(null);

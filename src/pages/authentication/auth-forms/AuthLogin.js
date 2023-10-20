@@ -1,16 +1,10 @@
 import React from 'react';
 
+
+import useLogin from 'services/login/login';
+
 // material-ui
-import {
-  Button,
-  FormHelperText,
-  Grid,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  Stack
-} from '@mui/material';
+import { Button, FormHelperText, Grid,IconButton,InputAdornment, InputLabel,OutlinedInput, Stack} from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -26,7 +20,7 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
 const AuthLogin = () => {
 
-
+  const { login } = useLogin(); 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -50,8 +44,12 @@ const AuthLogin = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
+            console.log(values)
             setStatus({ success: false });
             setSubmitting(false);
+            login(values.email,values.password)
+            
+            
           } catch (err) {
             setStatus({ success: false });
             setErrors({ submit: err.message });
