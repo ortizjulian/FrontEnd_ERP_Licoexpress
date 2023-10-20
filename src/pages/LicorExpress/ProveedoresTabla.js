@@ -2,7 +2,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-
+import useProveedores from 'services/proveedores/proveedores';
 
 import { MinusCircleOutlined, RedoOutlined } from '@ant-design/icons';
 
@@ -92,13 +92,16 @@ ProveedorTableHead.propTypes = {
 
 // ==============================|| Proveedor TABLE ||============================== //
 
-export default function ProveedorTable({rows}) {
+export default function ProveedorTable({ rows, obtenerProveedores }) {
     const [Proveedor] = useState('asc');
     const [ProveedorBy] = useState('trackingNo');
     const [selected] = useState([]);
 
     const [visibleDelete, setVisibleDelete] = useState(false);
-    const deleteOpen = () => { setVisibleDelete(true) };
+    const deleteOpen = (id) => {
+        setIdProveedor(id)
+        setVisibleDelete(true)
+    };
     const deleteClose = () => { setVisibleDelete(false) };
 
     const [visibleUpdate, setVisibleUpdate] = useState(false);
@@ -111,7 +114,7 @@ export default function ProveedorTable({rows}) {
 
     const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
 
-  
+
 
     const style = {
         position: 'absolute',
@@ -125,6 +128,20 @@ export default function ProveedorTable({rows}) {
         p: 4,
     };
 
+    const [idProveedor, setIdProveedor] = useState('');
+
+    const { deleteProveedor } = useProveedores()
+
+    const eliminarProveedores = async () => {
+        try {
+            var aux = await deleteProveedor(idProveedor);
+            obtenerProveedores();
+            deleteClose();
+            console.log(aux);
+        } catch (error) {
+            console.error("Error al eliminar proveedor: " + error);
+        }
+    };
 
     return (
         <Box>
@@ -174,9 +191,12 @@ export default function ProveedorTable({rows}) {
                                     <TableCell align="right">{row.correo}</TableCell>
 
                                     <TableCell align="left">{row.contacto}</TableCell>
-                                    <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<MinusCircleOutlined />} onClick={deleteOpen}>
-                                        Eliminar
-                                    </Button>
+                                    <TableCell align="right">
+                                        <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<MinusCircleOutlined />} onClick={() => deleteOpen(row.id)}>
+                                            Eliminar
+                                        </Button>
+                                    </TableCell>
+
                                     <Modal
                                         open={visibleDelete}
                                         onClose={deleteClose}
@@ -190,14 +210,17 @@ export default function ProveedorTable({rows}) {
                                             <Typography id="modal-modal-title" variant="h6" component="h2">
                                                 ¿Seguro que deseas eliminar el proveedor?
                                             </Typography>
-                                            <Button variant="contained" color="primary" sx={{ mt: 2 }} >
+                                            <Button onClick={eliminarProveedores} variant="contained" color="primary" sx={{ mt: 2 }}  >
                                                 Eliminar
                                             </Button>
                                         </Box>
                                     </Modal>
-                                    <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<RedoOutlined />} onClick={updateOpen}>
-                                        Actualizar
-                                    </Button>
+                                    <TableCell align="right">
+                                        <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<RedoOutlined />} onClick={updateOpen}>
+                                            Actualizar
+                                        </Button>
+                                    </TableCell>
+
                                     <Modal
                                         open={visibleUpdate}
                                         onClose={updateClose}

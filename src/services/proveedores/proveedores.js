@@ -23,14 +23,24 @@ function useProveedores() {
     try {
       const response = await API('api/suppliers', 'POST', { nombre, correo, numero_contacto });
       if (response.data ) {
-
       } 
     } catch (error) {
       alert("Error")
     }
   };
 
-  return { getProveedores, createProveedor };
+  const deleteProveedor = async (id) => {
+    try {
+      const response = await API('api/suppliers/'+id, 'DELETE');
+      if (response.data ) {
+        console.log(response.data);
+      }
+    } catch (error) {
+      alert("Error")
+    }
+  };
+
+  return { getProveedores, createProveedor, deleteProveedor };
 }
 
 

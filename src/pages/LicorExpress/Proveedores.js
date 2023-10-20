@@ -123,7 +123,7 @@ const ProveedoresPage = () => {
                     </Grid>
                 </Grid>
                 <MainCard sx={{ mt: 2 }} content={false}>
-                    <ProveedorTable rows= {rows}/>
+                    <ProveedorTable rows= {rows} obtenerProveedores={obtenerProveedores}/>
                 </MainCard>
             </Grid>
         </Grid>
