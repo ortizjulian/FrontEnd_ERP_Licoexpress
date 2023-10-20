@@ -10,11 +10,12 @@ function useLogin() {
   };
 
 
-  const login = async (email, password) => {
+  const login = async (correo, contrasena) => {
     try {
-      const response = await API('login', 'POST', { email, password });
-      if (response.data && response.data.token) {
-        localStorage.setItem('token', response.data.token);
+      const response = await API('user/login', 'POST', { correo, contrasena });
+      if (response.data ) {
+        alert(response.data)
+        localStorage.setItem('token', response.data);
         navigate('/dashboard');
       } 
     } catch (error) {
