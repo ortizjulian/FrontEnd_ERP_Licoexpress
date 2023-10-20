@@ -14,7 +14,6 @@ function useLogin() {
     try {
       const response = await API('user/login', 'POST', { correo, contrasena });
       if (response.data ) {
-        alert(response.data)
         localStorage.setItem('token', response.data);
         navigate('/dashboard');
       } 

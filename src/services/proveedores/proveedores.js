@@ -19,7 +19,18 @@ function useProveedores() {
     }
   };
 
-  return { getProveedores };
+  const createProveedor = async (nombre, correo, numero_contacto) => {
+    try {
+      const response = await API('api/suppliers', 'POST', { nombre, correo, numero_contacto });
+      if (response.data ) {
+
+      } 
+    } catch (error) {
+      alert("Error")
+    }
+  };
+
+  return { getProveedores, createProveedor };
 }
 
 
