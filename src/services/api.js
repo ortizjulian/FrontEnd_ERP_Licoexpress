@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-const URL=`http://localhost:5052/`;
+const URL=`https://localhost:5052/`;
 
 export default async (path, method, data, headers={},options={}) => {
     try {

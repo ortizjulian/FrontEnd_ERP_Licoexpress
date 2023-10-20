@@ -1,25 +1,14 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 // material-ui
-import { Box, Link, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import useProveedores from 'services/proveedores/proveedores';
 
-// project import
-import Dot from 'components/@extended/Dot';
-
-function createData(id, nombre, correo, contacto, estado) {
-    return { id, nombre, correo, contacto, estado };
+function createData(id, nombre, correo, contacto) {
+    return { id, nombre, correo, contacto };
 }
-
-const rows = [
-    createData(1, 'Bavaria', 'Bavariaempresa@gmail.com', 3016547819, 2),
-    createData(5, 'provvedor1', 'ejemplo1@gmail1.com', 3016547819, 0),
-    createData(4, 'provvedor2', 'ejemplo1@gmail2.com', 3016547819, 1),
-    createData(2, 'provvedor3', 'ejemplo1@gmail3.com', 30147819, 1),
-    createData(8, 'provvedor4', 'ejemplo1@gmail4.com', 3051647819, 1),
-    createData(7, 'provvedor5', 'ejemplo1@gmail5com', 3016546819, 0)
-];
 
 function descendingComparator(a, b, ProveedorBy) {
     if (b[ProveedorBy] < a[ProveedorBy]) {
@@ -73,12 +62,6 @@ const headCells = [
         align: 'left',
         disablePadding: false,
         label: 'Numero de contacto'
-    },
-    {
-        id: 'estado',
-        align: 'left',
-        disablePadding: false,
-        label: 'Estado'
     }
 ];
 
@@ -108,42 +91,6 @@ ProveedorTableHead.propTypes = {
     ProveedorBy: PropTypes.string
 };
 
-// ==============================|| Proveedor TABLE - STATUS ||============================== //
-
-const ProveedorStatus = ({ status }) => {
-    let color;
-    let title;
-
-    switch (status) {
-        case 0:
-            color = 'warning';
-            title = 'Pendiente';
-            break;
-        case 1:
-            color = 'success';
-            title = 'Activo';
-            break;
-        case 2:
-            color = 'error';
-            title = 'Cancelado';
-            break;
-        default:
-            color = 'primary';
-            title = 'NO HAY INFORMACION';
-    }
-
-    return (
-        <Stack direction="row" spacing={1} alignItems="center">
-            <Dot color={color} />
-            <Typography>{title}</Typography>
-        </Stack>
-    );
-};
-
-ProveedorStatus.propTypes = {
-    status: PropTypes.number
-};
-
 // ==============================|| Proveedor TABLE ||============================== //
 
 export default function ProveedorTable() {
@@ -152,6 +99,34 @@ export default function ProveedorTable() {
     const [selected] = useState([]);
 
     const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
+
+    const {getProveedores} = useProveedores();
+
+    const [proveedores,setproveedores] = useState([]);
+
+    useEffect(() => {
+        const obtenerProveedores = async () => {
+          try {
+            var aux = await getProveedores();
+            console.log(aux);
+            setproveedores(aux);
+          } catch (error) {
+            console.error("Error al obtener proveedores: " + error);
+          }
+        };
+      
+        obtenerProveedores(); // Llamar a la función asincrónica
+      }, []);
+
+    /*useEffect(async()=>{ 
+        var aux = await getProveedores();
+        console.log(aux);
+        setproveedores(aux);
+    },[])*/
+
+    const rows = proveedores.map((proveedor) => {
+        return createData(proveedor.id, proveedor.nombre, proveedor.correo, proveedor.numero_contacto); 
+    });
 
     return (
         <Box>
@@ -201,10 +176,6 @@ export default function ProveedorTable() {
                                     <TableCell align="right">{row.correo}</TableCell>
 
                                     <TableCell align="left">{row.contacto}</TableCell>
-
-                                    <TableCell align="right">
-                                        <ProveedorStatus status={row.estado} />
-                                    </TableCell>
                                 </TableRow>
                             );
                         })}
