@@ -23,6 +23,7 @@ function useProveedores() {
     try {
       const response = await API('api/suppliers', 'POST', { nombre, correo, numero_contacto });
       if (response.data ) {
+        console.log(response.data)
       } 
     } catch (error) {
       alert("Error")
