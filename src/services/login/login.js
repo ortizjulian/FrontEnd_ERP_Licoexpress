@@ -6,15 +6,15 @@ function useLogin() {
   const navigate = useNavigate();
 
   const isUserLoggedIn = () => {
-    return !!localStorage.getItem('token');
+    return !localStorage.getItem('token');
   };
 
 
   const login = async (correo, contrasena) => {
     try {
       const response = await API('user/login', 'POST', { correo, contrasena });
-      if (response.data ) {
-        localStorage.setItem('token', response.data);
+      if (response.Token ) {
+        localStorage.setItem('token', response.Token);
         navigate('/dashboard');
       } 
     } catch (error) {
