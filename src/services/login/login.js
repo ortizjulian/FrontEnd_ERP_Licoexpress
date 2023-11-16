@@ -6,17 +6,32 @@ function useLogin() {
   const navigate = useNavigate();
 
   const isUserLoggedIn = () => {
-    return !localStorage.getItem('token');
+    return localStorage.getItem('token') || false;
   };
 
+  const isAdmin = () => {
+    return getUserInfo().rol === "Administrador";
+  };
+
+  const getUserInfo = ()=> {
+
+    const storedJsonString = localStorage.getItem('token');
+
+      return JSON.parse(storedJsonString);
+ 
+  }
 
   const login = async (correo, contrasena) => {
     try {
-      const response = await API('user/login', 'POST', { correo, contrasena });
-      if (response.Token ) {
-        localStorage.setItem('token', response.Token);
+      const response = await API('api/user/login', 'POST', { correo, contrasena });
+      if (response.data) {
+        const jsonString = JSON.stringify(response.data);
+
+        localStorage.setItem('token', jsonString);
+      
         navigate('/dashboard');
-      } 
+      }
+      
     } catch (error) {
       alert("Error")
 
@@ -28,7 +43,7 @@ function useLogin() {
     navigate('/login');
   };
 
-  return { login, logout, isUserLoggedIn };
+  return { login, logout, isUserLoggedIn ,getUserInfo,isAdmin};
 }
 
 

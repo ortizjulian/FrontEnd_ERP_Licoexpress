@@ -63,15 +63,7 @@ const utilities = {
       url: '/inventario',
       icon: icons.TableOutlined,
       breadcrumbs: true
-    },
-    {
-      id: 'util-usuarios',
-      title: 'Usuarios',
-      type: 'item',
-      url: '/usuarios',
-      icon: icons.TeamOutlined,
-      breadcrumbs: true
-    },
+    }
   ]
 };
 
