@@ -1,152 +1,199 @@
-import PropTypes from 'prop-types';
-
-// material-ui
-import { useTheme } from '@mui/material/styles';
-import { Grid, Stack, Typography } from '@mui/material';
-
-// project import
+import React, { useState, useEffect } from 'react';
+import { Grid, Typography, Box, Button, Modal, TextField } from '@mui/material';
 import MainCard from 'components/MainCard';
-import ComponentSkeleton from '../components-overview/ComponentSkeleton';
+import ProductoTabla from './ProductoTabla'; // Asegúrate de tener el componente ProductoTabla creado
 
-// ===============================|| SHADOW BOX ||=============================== //
+import { PlusCircleOutlined } from '@ant-design/icons';
+import useProductos from 'services/productos/productos';
 
-function ShadowBox({ shadow }) {
-  return (
-    <MainCard border={false} sx={{ boxShadow: shadow }}>
-      <Stack spacing={1} justifyContent="center" alignItems="center">
-        <Typography variant="h6">boxShadow</Typography>
-        <Typography variant="subtitle1">{shadow}</Typography>
-      </Stack>
-    </MainCard>
-  );
+function createData(id, nombre, tipo, tamaño, precioVenta, proveedor) {
+  return { id, nombre, tipo, tamaño, precioVenta, proveedor };
 }
 
-ShadowBox.propTypes = {
-  shadow: PropTypes.string.isRequired
-};
+const ProductsPage = () => {
+  const { getProductos, createProducto } = useProductos();
+  const [visibleCreate, setVisibleCreate] = useState(false);
+  const createOpen = () => {
+    setVisibleCreate(true);
+  };
+  const createClose = () => {
+    setVisibleCreate(false);
+  };
 
-// ===============================|| CUSTOM - SHADOW BOX ||=============================== //
+  const [nombreProducto, setNombreProducto] = useState('');
+  const [tipoProducto, setTipoProducto] = useState('');
+  const [tamañoProducto, setTamañoProducto] = useState('');
+  const [precioVentaProducto, setPrecioVentaProducto] = useState('');
+  const [proveedorProducto, setProveedorProducto] = useState('');
+  const [imagenProducto, setImagenProducto] = useState('');
+  const [precioBaseProducto, setPrecioBaseProducto] = useState('');
 
-function CustomShadowBox({ shadow, label, color, bgcolor }) {
+
+
+  const [productos, setProductos] = useState([]);
+
+  const obtenerProductos = async () => {
+    try {
+      const aux = await getProductos();
+      setProductos(aux);
+    } catch (error) {
+      console.error("Error al obtener productos: " + error);
+    }
+  };
+
+  useEffect(() => {
+    obtenerProductos();
+  }, []);
+
+  const rows = productos.map((producto) => {
+    return createData(
+      producto.id,
+      producto.nombre,
+      producto.tipo_name,
+      producto.tamaño,
+      producto.precio_venta,
+      producto.proveedor_name
+    );
+  });
+
+  const crearProducto = async () => {
+    try {
+      await createProducto({
+        nombre: nombreProducto,
+        tipo_id: tipoProducto,
+        tamaño: tamañoProducto,
+        precio_base: parseFloat(precioBaseProducto),
+        precio_venta: parseFloat(precioVentaProducto), // Asegúrate de incluir también precio_venta si es necesario
+        proveedor_id: proveedorProducto,
+        imagen: imagenProducto,
+      });
+      obtenerProductos();
+      createClose();
+      setNombreProducto('');
+      setTipoProducto('');
+      setTamañoProducto('');
+      setPrecioVentaProducto('');
+      setProveedorProducto('');
+      setImagenProducto('');
+      setPrecioBaseProducto(''); // Limpiar también el campo de precio_base
+    } catch (error) {
+      console.error("Error al crear producto: " + error);
+    }
+  };
+  
+  
+
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
-    <MainCard border={false} sx={{ bgcolor: bgcolor || 'inherit', boxShadow: shadow }}>
-      <Stack spacing={1} justifyContent="center" alignItems="center">
-        <Typography variant="subtitle1" color={color}>
-          {label}
-        </Typography>
-      </Stack>
-    </MainCard>
-  );
-}
+    <Grid container rowSpacing={4.5} columnSpacing={2.75}>
+      <Grid item xs={12} md={7} lg={12}>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">Catálogo de Productos</Typography>
+          </Grid>
+          <Grid item xs={12} md={4} lg={6}>
+            <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<PlusCircleOutlined />} onClick={createOpen}>
+              Nuevo Producto
+            </Button>
+            <Modal
+              open={visibleCreate}
+              onClose={createClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                  Añadir Producto
+                </Typography>
+                <TextField
+                  id="nombre"
+                  label="Nombre del producto"
+                  variant="standard"
+                  fullWidth
+                  value={nombreProducto}
+                  onChange={(e) => setNombreProducto(e.target.value)}
+                  sx={{ mt: 2 }}
+                />
+                <TextField
+                  id="tipo"
+                  label="Tipo ID"
+                  variant="standard"
+                  fullWidth
+                  value={tipoProducto}
+                  onChange={(e) => setTipoProducto(e.target.value)}
+                  sx={{ mt: 2 }}
+                />
+                <TextField
+                  id="imagen"
+                  label="URL de la imagen"
+                  variant="standard"
+                  fullWidth
+                  value={imagenProducto}
+                  onChange={(e) => setImagenProducto(e.target.value)}
+                  sx={{ mt: 2 }}
+                />
 
-CustomShadowBox.propTypes = {
-  shadow: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  bgcolor: PropTypes.string
-};
+                <TextField
+                  id="tamaño"
+                  label="Tamaño"
+                  variant="standard"
+                  fullWidth
+                  value={tamañoProducto}
+                  onChange={(e) => setTamañoProducto(e.target.value)}
+                  sx={{ mt: 2 }}
+                />
+                <TextField
+                  id="precioBase"
+                  label="Precio base"
+                  variant="standard"
+                  fullWidth
+                  value={precioBaseProducto}
+                  onChange={(e) => setPrecioBaseProducto(e.target.value)}
+                  sx={{ mt: 2 }}
+                />
 
-// ============================|| COMPONENT - SHADOW ||============================ //
-
-const ComponentShadow = () => {
-  const theme = useTheme();
-
-  return (
-    <ComponentSkeleton>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <MainCard title="Basic Shadow" codeHighlight>
-            <Grid container spacing={3}>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="0" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="1" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="2" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="3" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="4" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="5" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="6" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="7" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="8" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="9" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="10" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="11" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="12" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="13" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="14" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="15" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="16" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="17" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="18" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="19" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="20" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="21" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="22" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="23" />
-              </Grid>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <ShadowBox shadow="24" />
-              </Grid>
-            </Grid>
-          </MainCard>
+                <TextField
+                  id="precioVenta"
+                  label="Precio de venta"
+                  variant="standard"
+                  fullWidth
+                  value={precioVentaProducto}
+                  onChange={(e) => setPrecioVentaProducto(e.target.value)}
+                  sx={{ mt: 2 }}
+                />
+                <TextField
+                  id="proveedor"
+                  label="Proveedor ID"
+                  variant="standard"
+                  fullWidth
+                  value={proveedorProducto}
+                  onChange={(e) => setProveedorProducto(e.target.value)}
+                  sx={{ mt: 2 }}
+                />
+                <Button variant="contained" color="primary" onClick={crearProducto} sx={{ mt: 2 }}>
+                  Crear Producto
+                </Button>
+              </Box>
+            </Modal>
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <MainCard title="Custom Shadow" codeHighlight>
-            <Grid container spacing={3}>
-              <Grid item xs={6} sm={4} md={3} lg={2}>
-                <CustomShadowBox shadow={theme.customShadows.z1} label="z1" color="inherit" />
-              </Grid>
-            </Grid>
-          </MainCard>
-        </Grid>
+        <MainCard sx={{ mt: 2 }} content={false}>
+          <ProductoTabla rows={rows} />
+        </MainCard>
       </Grid>
-    </ComponentSkeleton>
+    </Grid>
   );
 };
 
-export default ComponentShadow;
+export default ProductsPage;

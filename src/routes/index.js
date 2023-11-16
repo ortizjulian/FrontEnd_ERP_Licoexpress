@@ -8,7 +8,7 @@ import MainLayout from 'layout/MainLayout/index';
 import DashboardDefault from 'pages/dashboard/index';
 import SamplePage from 'pages/extra-pages/SamplePage';
 import ProveedoresPage from 'pages/LicorExpress/Proveedores';
-import Shadow from 'pages/components-overview/Shadow';
+import ProductsPage from 'pages/LicorExpress/Productos';
 //import useLogin from 'services/login/login';
 
 const PrivateRoute = ({ element, ...props }) => {
@@ -25,7 +25,7 @@ const LoginRoutes = () => (
     <Route path="/"  element={<PrivateRoute element={<MainLayout />} />} >
       <Route path="dashboard" element={<PrivateRoute element={<DashboardDefault />} />} />
       <Route path="sample-page" element={<PrivateRoute element={<SamplePage />} />} />
-      <Route path="shadow" element={<PrivateRoute element={<Shadow />} />} />
+      <Route path="productos" element={<PrivateRoute element={<ProductsPage />} />} />
       <Route path="Proveedores" element={<PrivateRoute element={<ProveedoresPage />} />} />
     </Route>
   </Routes>
