@@ -46,7 +46,7 @@ const headCells = [
     },
     {
         id: 'correo',
-        align: 'right',
+        align: 'left',
         disablePadding: false,
         label: 'Correo Electronico'
     },

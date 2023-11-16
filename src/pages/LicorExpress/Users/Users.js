@@ -4,6 +4,9 @@ import MainCard from 'components/MainCard';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import useUsers from 'services/users/users';
 import UserTable from './UsersTable';
+import useSedes from 'services/sedes/sedes';
+import { roles } from './roles-data';
+import { MenuItem, Select } from '../../../../node_modules/@mui/material/index';
 
 function createData(id, correo, contrasena,rol,sede) {
     return { id, correo, contrasena, rol, sede };
@@ -12,17 +15,22 @@ function createData(id, correo, contrasena,rol,sede) {
 
 const UsersPage = () => {
     const {getUsers, createUser} = useUsers()
+    const {getSedes} = useSedes()
+
+   
+    
+  
     const [visibleCreate, setVisibleCreate] = useState(false);
     const createOpen = () => { setVisibleCreate(true) };
     const createClose = () => { setVisibleCreate(false) };
 
     const [correo, setCorreo] = useState('');
     const [contrasena, setContrasena] = useState('');
-    const [sede, setSede] = useState('');
+    const [selectedSede, setSelectedSede] = useState('');
     const [rol, setRol] = useState('');
 
     const [users, setUsers] = useState([]);
-
+    const [sedes, setSedes] = useState([]);
     const obtenerUsuarios = async () => {
         try {
             var aux = await getUsers();
@@ -33,8 +41,27 @@ const UsersPage = () => {
         }
     };
 
+    const obtenerSedes = async () => {
+        try {
+            var aux = await getSedes();
+
+            setSedes(aux);
+        } catch (error) {
+            console.error("Error al obtener Sedes: " + error);
+        }
+    };
+
+    const handleSelectChange = (event) => {
+        setSelectedSede(event.target.value);
+      };
+
+      const handleRolChange = (event) => {
+        setRol(event.target.value);
+      };
+
     useEffect(() => {
         obtenerUsuarios(); 
+        obtenerSedes();
     }, []);
 
     const rows = users.map((user) => {
@@ -43,12 +70,12 @@ const UsersPage = () => {
 
     const crearUsuario = async () => {
         try {
-            await createUser(correo,contrasena, rol,sede);
+            await createUser(correo,contrasena, rol,selectedSede);
             obtenerUsuarios(); 
             createClose();
             setCorreo('');
             setContrasena('');
-            setSede('');
+            selectedSede('');
             setRol('');
         } catch (error) {
             console.error("Error al crear Usuario: " + error);
@@ -95,11 +122,45 @@ const UsersPage = () => {
                                         variant="standard"
                                         fullWidth
                                         value={correo}
-                                        onChange={(e) => setNombreProveedor(e.target.value)}
+                                        onChange={(e) => setCorreo(e.target.value)}
                                         sx={{ mt: 2 }}
                                     />
-                                 
-                                   
+                                     <TextField
+                                        id="contrasena"
+                                        label="Contrasena"
+                                        variant="standard"
+                                        fullWidth
+                                        value={contrasena}
+                                        onChange={(e) => setContrasena(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                     <Select
+                                        label="Seleccionar Rol"
+                                        value={rol}
+                                        onChange={handleRolChange}
+                                        fullWidth
+                                        sx={{ mt: 2 }}
+                                        >
+                                        {roles.map((opcion) => (
+                                            <MenuItem key={opcion} value={opcion}>
+                                            {opcion}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                    <Select
+                                        label="Seleccionar Sede"
+                                        value={selectedSede}
+                                        onChange={handleSelectChange}
+                                        fullWidth
+                                        sx={{ mt: 2 }}
+                                        >
+                                        {sedes.map((opcion) => (
+                                            <MenuItem key={opcion.id} value={opcion.id}>
+                                            {opcion.nombre}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+
                                     <Button variant="contained" color="primary" onClick={crearUsuario} sx={{ mt: 2 }}>
                                         Crear
                                     </Button>
@@ -109,7 +170,7 @@ const UsersPage = () => {
                     </Grid>
                 </Grid>
                 <MainCard sx={{ mt: 2 }} content={false}>
-                    <UserTable rows= {rows} obtenerProveedores={getUsers}/>
+                    <UserTable rows= {rows} />
                 </MainCard>
             </Grid>
         </Grid>

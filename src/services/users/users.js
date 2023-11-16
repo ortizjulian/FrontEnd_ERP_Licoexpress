@@ -3,7 +3,7 @@ import API from '../api';
 function useUsers() {
   const getUsers = async () => {
     try {
-      const response = await API('api/users', 'GET');
+      const response = await API('api/user', 'GET');
       if (response.data ) {
     
         return response.data;
@@ -17,9 +17,9 @@ function useUsers() {
     }
   };
 
-  const createUser = async (correo, contrasena, rol,sede) => {
+  const createUser = async (correo, contrasena, rol,sede_id) => {
     try {
-      const response = await API('api/suppliers', 'POST', { correo, contrasena, rol,sede });
+      const response = await API('api/user/signup', 'POST', { correo, contrasena, rol,sede_id });
       if (response.data ) {
         console.log(response.data)
       } 
@@ -30,7 +30,7 @@ function useUsers() {
 
   const deleteUsers = async (id) => {
     try {
-      const response = await API('api/users/'+id, 'DELETE');
+      const response = await API('api/user/'+id, 'DELETE');
       if (response.data ) {
         console.log(response.data);
       }
