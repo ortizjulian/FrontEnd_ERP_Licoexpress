@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Box, Button, Modal, TextField } from '@mui/material';
 import MainCard from 'components/MainCard';
 import ProductoTabla from './ProductoTabla'; // Asegúrate de tener el componente ProductoTabla creado
+import ProductoBox from './ProductoBox';
 
 import { PlusCircleOutlined } from '@ant-design/icons';
 import useProductos from 'services/productos/productos';
@@ -191,6 +192,16 @@ const ProductsPage = () => {
         <MainCard sx={{ mt: 2 }} content={false}>
           <ProductoTabla rows={rows} />
         </MainCard>
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h5">Vista de Productos</Typography>
+          <Grid container spacing={2} sx={{ mt: 2 }}>
+            {productos.map((producto) => (
+              <Grid item key={producto.id} xs={12} sm={6} md={4} lg={3}>
+                <ProductoBox product={producto} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
       </Grid>
     </Grid>
   );
