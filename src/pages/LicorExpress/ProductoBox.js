@@ -29,7 +29,7 @@ const ProductoBox = ({ product }) => {
     <Card variant="outlined" style={cardStyle}>
       <CardMedia
         component="img"
-        src={imagen} // Utiliza la URL de la imagen
+        src={imagen} 
         alt={nombre}
         style={mediaStyle}
       />

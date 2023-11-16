@@ -6,6 +6,9 @@ import {
   BgColorsOutlined,
   FontSizeOutlined,
   LoadingOutlined,
+  ShopOutlined,
+  TableOutlined,
+  TeamOutlined,
   IdcardOutlined
 } from '@ant-design/icons';
 
@@ -17,6 +20,9 @@ const icons = {
   AntDesignOutlined,
   LoadingOutlined,
   AppstoreAddOutlined,
+  ShopOutlined,
+  TableOutlined,
+  TeamOutlined,
   IdcardOutlined
 };
 
@@ -32,7 +38,7 @@ const utilities = {
       title: 'Productos',
       type: 'item',
       url: '/productos',
-      icon: icons.BarcodeOutlined //cambiar icono
+      icon: icons.BarcodeOutlined 
     },
     {
       id: 'util-proveedores',
@@ -41,7 +47,31 @@ const utilities = {
       url: '/proveedores',
       icon: icons.IdcardOutlined,
       breadcrumbs: true
-    }
+    },
+    {
+      id: 'util-sedes',
+      title: 'Sedes',
+      type: 'item',
+      url: '/sedes',
+      icon: icons.ShopOutlined, 
+      breadcrumbs: true
+    },
+    {
+      id: 'util-inventario',
+      title: 'Inventario',
+      type: 'item',
+      url: '/inventario',
+      icon: icons.TableOutlined,
+      breadcrumbs: true
+    },
+    {
+      id: 'util-usuarios',
+      title: 'Usuarios',
+      type: 'item',
+      url: '/usuarios',
+      icon: icons.TeamOutlined,
+      breadcrumbs: true
+    },
   ]
 };
 
