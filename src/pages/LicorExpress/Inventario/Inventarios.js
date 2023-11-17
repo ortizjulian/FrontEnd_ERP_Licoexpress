@@ -8,8 +8,8 @@ import InventarioTable from './InventarioTable';
 import InventoryFilter from './InventoryFilter';
 import useProductos from 'services/productos/productos';
 
-function createData(id,sede, producto, fecha_registro, lote,stock) {
-    return { id, sede, producto,fecha_registro, lote, stock };
+function createData(id, producto, fecha_registro, lote,stock) {
+    return { id, producto,fecha_registro, lote, stock };
 }
 
 
@@ -69,7 +69,7 @@ const InventariosPage = () => {
     }, []);
 
     const rows = inventario.map((registro) => {
-        return createData(registro.id,registro.sede,registro.producto,registro.fecha_registro,registro.lote,registro.stock);
+        return createData(registro.id,registro.producto,registro.fecha_registro,registro.lote,registro.stock);
     });
 
    

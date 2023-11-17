@@ -41,12 +41,6 @@ const headCells = [
         label: 'ID'
     },
     {
-        id: 'sede',
-        align: 'left',
-        disablePadding: false,
-        label: 'Sede'
-    },
-    {
         id: 'producto',
         align: 'left',
         disablePadding: false,
@@ -154,7 +148,6 @@ export default function InventarioTable({ rows }) {
                                             {row.id}
                                         </Link>
                                     </TableCell>
-                                    <TableCell align="left">{row.sede}</TableCell>
                                     <TableCell align="left">{row.producto}</TableCell>
                                     <TableCell align="left">{row.lote}</TableCell>
                                     <TableCell align="left">{row.stock}</TableCell>

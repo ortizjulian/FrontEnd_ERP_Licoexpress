@@ -4,7 +4,6 @@ import React from 'react'
 const InventoryFilter = ({data=[], onFilter})  => {
 
   const searchFilterOptions = [
-    {label: 'Sede', value: 'sede'},
     {label: 'Producto', value: 'producto'},
     {label: 'Lote', value: 'lote'},
     {label: 'Stock', value: 'stock'}
