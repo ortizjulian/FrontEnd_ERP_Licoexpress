@@ -75,8 +75,8 @@ const UsersPage = () => {
             createClose();
             setCorreo('');
             setContrasena('');
-            selectedSede('');
-            setRol('');
+            selectedSede(null);
+            setRol(null);
         } catch (error) {
             console.error("Error al crear Usuario: " + error);
         }
@@ -170,7 +170,7 @@ const UsersPage = () => {
                     </Grid>
                 </Grid>
                 <MainCard sx={{ mt: 2 }} content={false}>
-                    <UserTable rows= {rows} />
+                    <UserTable rows= {rows} getUsers={obtenerUsuarios} />
                 </MainCard>
             </Grid>
         </Grid>
