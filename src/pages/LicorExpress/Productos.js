@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Typography, Box, Button, Modal, TextField } from '@mui/material';
+import { Grid, Typography, Box, Button, Modal, TextField, MenuItem, Select,InputLabel } from '@mui/material';
 
 import ProductoBox from './ProductoBox';
 
 import { PlusCircleOutlined } from '@ant-design/icons';
 import useProductos from 'services/productos/productos';
+import useTipos from 'services/tipos/tipos';
+import useProveedores from 'services/proveedores/proveedores';
 
 
 const ProductsPage = () => {
   const { getProductos, createProducto, deleteProducto, updateProducto } = useProductos();
+  const { getTipos  } = useTipos();
+const {getProveedores} = useProveedores();
+
+
   const [visibleCreate, setVisibleCreate] = useState(false);
   const createOpen = () => {
     setVisibleCreate(true);
@@ -18,7 +24,7 @@ const ProductsPage = () => {
   };
 
   const [nombreProducto, setNombreProducto] = useState('');
-  const [tipoProducto, setTipoProducto] = useState('');
+  const [tipoProducto, setTipoProducto] = useState();
   const [tamañoProducto, setTamañoProducto] = useState('');
   const [precioVentaProducto, setPrecioVentaProducto] = useState('');
   const [proveedorProducto, setProveedorProducto] = useState('');
@@ -26,8 +32,9 @@ const ProductsPage = () => {
   const [precioBaseProducto, setPrecioBaseProducto] = useState('');
 
 
-
   const [productos, setProductos] = useState([]);
+  const [tipos, setTipos] = useState([]);
+  const [proveedores, setProveedores] = useState([]);
 
   const obtenerProductos = async () => {
     try {
@@ -38,8 +45,28 @@ const ProductsPage = () => {
     }
   };
 
+  const obtenerProveedores = async () => {
+    try {
+      const aux = await getProveedores();
+      setProveedores(aux);
+    } catch (error) {
+      console.error("Error al obtener proveedores: " + error);
+    }
+  };
+
+  const obtenerTipos = async () => {
+    try {
+      const aux = await getTipos();
+      setTipos(aux);
+    } catch (error) {
+      console.error("Error al obtener tipos: " + error);
+    }
+  };
+
   useEffect(() => {
     obtenerProductos();
+    obtenerTipos();
+    obtenerProveedores();
   }, []);
 
   const handleDeleteProduct = async (productId) => {
@@ -90,7 +117,12 @@ const ProductsPage = () => {
     }
   };
   
-  
+  const handleTipoChange = (event) => {
+    setTipoProducto(event.target.value);
+  };
+  const handleProoveedorChange = (event) => {
+    setProveedorProducto(event.target.value);
+  };
 
   const style = {
     position: 'absolute',
@@ -111,7 +143,7 @@ const ProductsPage = () => {
           <Grid item>
             <Typography variant="h5">Catálogo de Productos</Typography>
           </Grid>
-          <Grid item xs={12} md={4} lg={6}>
+          <Grid justifyContent= 'space-between'>
             <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<PlusCircleOutlined />} onClick={createOpen}>
               Nuevo Producto
             </Button>
@@ -134,15 +166,8 @@ const ProductsPage = () => {
                   onChange={(e) => setNombreProducto(e.target.value)}
                   sx={{ mt: 2 }}
                 />
-                <TextField
-                  id="tipo"
-                  label="Tipo ID"
-                  variant="standard"
-                  fullWidth
-                  value={tipoProducto}
-                  onChange={(e) => setTipoProducto(e.target.value)}
-                  sx={{ mt: 2 }}
-                />
+               
+                                    
                 <TextField
                   id="imagen"
                   label="URL de la imagen"
@@ -181,15 +206,36 @@ const ProductsPage = () => {
                   onChange={(e) => setPrecioVentaProducto(e.target.value)}
                   sx={{ mt: 2 }}
                 />
-                <TextField
-                  id="proveedor"
-                  label="Proveedor ID"
-                  variant="standard"
-                  fullWidth
-                  value={proveedorProducto}
-                  onChange={(e) => setProveedorProducto(e.target.value)}
-                  sx={{ mt: 2 }}
-                />
+                 <InputLabel style={{marginTop: '10px'}} id="tipo-label">Seleccionar Tipo</InputLabel>
+                                     <Select
+                                        labelId="tipo-label"
+                                        label="Seleccionar Tipo"
+                                        value={tipoProducto}
+                                        onChange={handleTipoChange}
+                                        fullWidth
+                                       
+                                        >
+                                        {tipos.map((opcion) => (
+                                            <MenuItem key={opcion} value={opcion.id}>
+                                            {opcion.descripcion}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                 <InputLabel style={{marginTop: '10px'}} id="proveedor-label">Seleccionar Proveedor</InputLabel>
+                                     <Select
+                                        labelId="proveedor-label"
+                                        label="Seleccionar Proveedor"
+                                        value={proveedorProducto}
+                                        onChange={handleProoveedorChange}
+                                        fullWidth
+                                       
+                                        >
+                                        {proveedores.map((opcion) => (
+                                            <MenuItem key={opcion} value={opcion.id}>
+                                            {opcion.nombre_empresa}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
                 <Button variant="contained" color="primary" onClick={crearProducto} sx={{ mt: 2 }}>
                   Crear Producto
                 </Button>
