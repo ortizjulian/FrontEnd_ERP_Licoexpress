@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import useSedes from 'services/sedes/sedes';
 import { Box,  TableCell, TableRow, Button, Modal, Typography, TextField } from '@mui/material';
  
-const SedeRow = ({row, obtenerSedes}) => {
+const ProveedorRow = ({row, obtenerSedes}) => {
     const [idSede, setIdSede] = useState('');
     const [visibleCreate, setVisibleCreate] = useState(false);
     const [visibleDelete, setVisibleDelete] = useState(false);
@@ -130,7 +130,7 @@ const SedeRow = ({row, obtenerSedes}) => {
         >
             <Box sx={style}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Actualizar Sede
+                    Actializar Sede
                 </Typography>
                 <TextField
                     id="nombre"
@@ -196,4 +196,4 @@ const SedeRow = ({row, obtenerSedes}) => {
   )
 }
  
-export default SedeRow
+export default ProveedorRow

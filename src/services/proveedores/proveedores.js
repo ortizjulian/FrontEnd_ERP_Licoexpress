@@ -41,7 +41,20 @@ function useProveedores() {
     }
   };
 
-  return { getProveedores, createProveedor, deleteProveedor };
+  const updateProveedor = async (id, proveedorData) => {
+    try {
+      const response = await API(`api/suppliers/${id}`, 'PUT', proveedorData);
+      if (response && response.data) {
+        console.log(response.data);
+      } else {
+        console.error("Error al actualizar proveedor: Respuesta inesperada");
+      }
+    } catch (error) {
+      console.error("Error al actualizar proveedor: ", error);
+    }
+  };
+
+  return { getProveedores, createProveedor, deleteProveedor, updateProveedor };
 }
 
 
