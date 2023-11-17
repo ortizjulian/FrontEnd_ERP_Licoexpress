@@ -45,10 +45,34 @@ const headCells = [
         label: 'ID'
     },
     {
-        id: 'nombre',
+        id: 'nombre_empresa',
         align: 'left',
         disablePadding: true,
-        label: 'Nombre'
+        label: 'Nombre de la Empresa'
+    },
+    {
+        id: 'responsable',
+        align: 'right',
+        disablePadding: false,
+        label: 'Responsable'
+    },
+    {
+        id: 'numero registro',
+        align: 'right',
+        disablePadding: false,
+        label: 'Numero de Registro'
+    },
+    {
+        id: 'direccion',
+        align: 'right',
+        disablePadding: false,
+        label: 'Direccion'
+    },
+    {
+        id: 'ciudad',
+        align: 'right',
+        disablePadding: false,
+        label: 'Ciudad'
     },
     {
         id: 'correo',
@@ -187,10 +211,13 @@ export default function ProveedorTable({ rows, obtenerProveedores }) {
                                             {row.id}
                                         </Link>
                                     </TableCell>
-                                    <TableCell align="left">{row.nombre}</TableCell>
+                                    <TableCell align="left">{row.nombre_empresa}</TableCell>
+                                    <TableCell align="right">{row.responsable}</TableCell>
+                                    <TableCell align="right">{row.numero_registro}</TableCell>
+                                    <TableCell align="right">{row.direccion_empresa}</TableCell>
+                                    <TableCell align="right">{row.ciudad}</TableCell>
                                     <TableCell align="right">{row.correo}</TableCell>
-
-                                    <TableCell align="left">{row.contacto}</TableCell>
+                                    <TableCell align="left">{row.numero_contacto}</TableCell>
                                     <TableCell align="right">
                                         <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<MinusCircleOutlined />} onClick={() => deleteOpen(row.id)}>
                                             Eliminar
