@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Typography, Box, Button, Modal, TextField } from '@mui/material';
-import MainCard from 'components/MainCard';
-import ProductoTabla from './ProductoTabla'; // Asegúrate de tener el componente ProductoTabla creado
+
 import ProductoBox from './ProductoBox';
 
 import { PlusCircleOutlined } from '@ant-design/icons';
 import useProductos from 'services/productos/productos';
 
-function createData(id, nombre, tipo, tamaño, precioVenta, proveedor) {
-  return { id, nombre, tipo, tamaño, precioVenta, proveedor };
-}
 
 const ProductsPage = () => {
-  const { getProductos, createProducto } = useProductos();
+  const { getProductos, createProducto, deleteProducto, updateProducto } = useProductos();
   const [visibleCreate, setVisibleCreate] = useState(false);
   const createOpen = () => {
     setVisibleCreate(true);
@@ -46,17 +42,29 @@ const ProductsPage = () => {
     obtenerProductos();
   }, []);
 
-  const rows = productos.map((producto) => {
-    return createData(
-      producto.id,
-      producto.nombre,
-      producto.tipo_name,
-      producto.tamaño,
-      producto.precio_venta,
-      producto.proveedor_name
-    );
-  });
+  const handleDeleteProduct = async (productId) => {
+    try {
+      await deleteProducto(productId);
+      // Actualiza el estado local eliminando el producto con el ID dado
+      //setProductos((prevProductos) => prevProductos.filter((producto) => producto.id !== productId));
+      obtenerProductos();
+    } catch (error) {
+      console.error(`Error al eliminar producto con ID ${productId}:`, error);
+      window.alert(`Error al eliminar producto con ID ${productId}. Por favor, inténtelo de nuevo.`);
+    }
+  }
 
+  const handleUpdateProduct = async (productId, productData) => {
+    try {
+      await updateProducto(productId,productData);
+      // Actualiza el estado local eliminando el producto con el ID dado
+      //setProductos((prevProductos) => prevProductos.filter((producto) => producto.id !== productId));
+      obtenerProductos();
+    } catch (error) {
+      console.error(`Error al actualizar producto con ID ${productId}:`, error);
+      window.alert(`Error al actualizar producto con ID ${productId}. Por favor, inténtelo de nuevo.`);
+    }
+  }
   const crearProducto = async () => {
     try {
       await createProducto({
@@ -189,15 +197,12 @@ const ProductsPage = () => {
             </Modal>
           </Grid>
         </Grid>
-        <MainCard sx={{ mt: 2 }} content={false}>
-          <ProductoTabla rows={rows} />
-        </MainCard>
+        
         <Box sx={{ mt: 4 }}>
-          <Typography variant="h5">Vista de Productos</Typography>
           <Grid container spacing={2} sx={{ mt: 2 }}>
             {productos.map((producto) => (
               <Grid item key={producto.id} xs={12} sm={6} md={4} lg={3}>
-                <ProductoBox product={producto} />
+                <ProductoBox product={producto} onDelete={handleDeleteProduct} onUpdate={handleUpdateProduct} />
               </Grid>
             ))}
           </Grid>
