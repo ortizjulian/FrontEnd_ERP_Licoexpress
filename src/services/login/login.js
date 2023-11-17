@@ -32,7 +32,7 @@ function useLogin() {
 
         localStorage.setItem('token', jsonString);
       
-        navigate('/dashboard');
+        navigate('/productos');
         return { success: true, message: 'Inicio de sesión exitoso' };
       }
       }

@@ -25,7 +25,25 @@ function useInventario() {
       return [];
     }
   };
+  const getInventarioTotales = async (id) => {
+    try {
+      const response = await API('api/inventories/totals/'+id, 'GET');
+      if (response.data ) {
+        
+        setState({
 
+          data: response.data,
+          aux: response.data
+        });
+        return response.data;
+      }
+      else{
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  };
   const createRegistro = async (sede_id, producto_id,fecha_registro,lote,stock) => {
     try {
        await API('api/inventories/' +sede_id, 'POST', { sede_id, producto_id,fecha_registro,lote,stock });
@@ -41,7 +59,7 @@ function useInventario() {
     setState(s => ({...s, data}))
   },[setState])
 
-  return {state, getInventario,handleFilter,createRegistro };
+  return {state, getInventario,handleFilter,createRegistro,getInventarioTotales };
 }
 
 
