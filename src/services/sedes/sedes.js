@@ -32,6 +32,19 @@ function useSedes() {
     }
   };
 
+  const updateSede = async (id, sedeData) => {
+    try {
+      const response = await API(`api/locations/${id}`, 'PUT', sedeData);
+      if (response && response.data) {
+        console.log(response.data);
+      } else {
+        console.error("Error al actualizar sede: Respuesta inesperada");
+      }
+    } catch (error) {
+      console.error("Error al actualizar sede: ", error);
+    }
+  };
+
   const deleteSede = async (id) => {
     try {
       const response = await API('api/locations/'+id, 'DELETE');
@@ -43,7 +56,7 @@ function useSedes() {
     }
   };
 
-  return { getSedes, deleteSede, createSede };
+  return { getSedes, deleteSede, createSede, updateSede };
 }
 
 
