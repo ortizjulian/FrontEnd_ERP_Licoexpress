@@ -5,10 +5,9 @@ import ProveedorTable from './ProveedoresTabla';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import useProveedores from 'services/proveedores/proveedores';
 
-function createData(id, nombre, correo, contacto) {
-    return { id, nombre, correo, contacto };
+function createData(id, nombre_empresa, responsable, numero_registro, direccion_empresa, ciudad, correo, numero_contacto) {
+    return { id, nombre_empresa, responsable, numero_registro, direccion_empresa, ciudad, correo, numero_contacto  };
 }
-
 
 const ProveedoresPage = () => {
     const {getProveedores, createProveedor} = useProveedores()
@@ -16,9 +15,13 @@ const ProveedoresPage = () => {
     const createOpen = () => { setVisibleCreate(true) };
     const createClose = () => { setVisibleCreate(false) };
 
-    const [nombreProveedor, setNombreProveedor] = useState('');
+    const [nombreempresaProveedor, setNombreempresaProveedor] = useState('');
+    const [responsableProveedor, setResponsableProveedor] = useState('');
+    const [numeroregistroProveedor, setNumeroregistroProveedor] = useState('');
+    const [direccionempresaProveedor, setDireccionempresaProveedor] = useState('');
+    const [ciudadProveedor, setCiudadProveedor] = useState('');
     const [correoProveedor, setCorreoProveedor] = useState('');
-    const [numeroContacto, setNumeroContacto] = useState('');
+    const [numerocontactoProveedor, setNumerocontactoProveedor] = useState('');
     const [proveedores, setproveedores] = useState([]);
 
     const obtenerProveedores = async () => {
@@ -36,17 +39,21 @@ const ProveedoresPage = () => {
     }, []);
 
     const rows = proveedores.map((proveedor) => {
-        return createData(proveedor.id, proveedor.nombre, proveedor.correo, proveedor.numero_contacto);
+        return createData(proveedor.id, proveedor.nombre_empresa, proveedor.responsable, proveedor.numero_registro, proveedor.direccion_empresa, proveedor.ciudad, proveedor.correo, proveedor.numero_contacto, numerocontactoProveedor);
     });
 
     const crearProveedores = async () => {
         try {
-            var aux = await createProveedor(nombreProveedor, correoProveedor, numeroContacto);
+            var aux = await createProveedor(nombreempresaProveedor, responsableProveedor, numeroregistroProveedor, direccionempresaProveedor, ciudadProveedor, correoProveedor, numerocontactoProveedor);
             obtenerProveedores(); 
             createClose();
-            setNombreProveedor('');
+            setNombreempresaProveedor('');
+            setResponsableProveedor('');
+            setNumeroregistroProveedor('');
+            setDireccionempresaProveedor('');
+            setCiudadProveedor('');
             setCorreoProveedor('');
-            setNumeroContacto('');
+            setNumerocontactoProveedor('');
             console.log(aux);
         } catch (error) {
             console.error("Error al crear proveedor: " + error);
@@ -89,11 +96,47 @@ const ProveedoresPage = () => {
                                     </Typography>
                                     <TextField
                                         id="nombre"
-                                        label="Nombre del proveedor"
+                                        label="Nombre de la empresa"
                                         variant="standard"
                                         fullWidth
-                                        value={nombreProveedor}
-                                        onChange={(e) => setNombreProveedor(e.target.value)}
+                                        value={nombreempresaProveedor}
+                                        onChange={(e) => setNombreempresaProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                    <TextField
+                                        id="responsable"
+                                        label="nombre del responsable"
+                                        variant="standard"
+                                        fullWidth
+                                        value={responsableProveedor}
+                                        onChange={(e) => setResponsableProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                    <TextField
+                                        id="numero registro"
+                                        label="Numero de Registro"
+                                        variant="standard"
+                                        fullWidth
+                                        value={numeroregistroProveedor}
+                                        onChange={(e) => setNumeroregistroProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                    <TextField
+                                        id="direccion"
+                                        label="Direccion de la empresa"
+                                        variant="standard"
+                                        fullWidth
+                                        value={direccionempresaProveedor}
+                                        onChange={(e) => setDireccionempresaProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                    <TextField
+                                        id="ciudad"
+                                        label="Ciudad"
+                                        variant="standard"
+                                        fullWidth
+                                        value={ciudadProveedor}
+                                        onChange={(e) => setCiudadProveedor(e.target.value)}
                                         sx={{ mt: 2 }}
                                     />
                                     <TextField
@@ -110,8 +153,8 @@ const ProveedoresPage = () => {
                                         label="Número de contacto"
                                         variant="standard"
                                         fullWidth
-                                        value={numeroContacto}
-                                        onChange={(e) => setNumeroContacto(e.target.value)}
+                                        value={numerocontactoProveedor}
+                                        onChange={(e) => setNumerocontactoProveedor(e.target.value)}
                                         sx={{ mt: 2 }}
                                     />
                                     <Button variant="contained" color="primary" onClick={crearProveedores} sx={{ mt: 2 }}>

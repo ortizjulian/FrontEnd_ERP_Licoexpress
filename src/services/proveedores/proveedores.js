@@ -19,9 +19,9 @@ function useProveedores() {
     }
   };
 
-  const createProveedor = async (nombre, correo, numero_contacto) => {
+  const createProveedor = async (nombre_empresa, responsable, numero_registro, direccion_empresa, ciudad, correo, numero_contacto) => {
     try {
-      const response = await API('api/suppliers', 'POST', { nombre, correo, numero_contacto });
+      const response = await API('api/suppliers', 'POST', { nombre_empresa, responsable, numero_registro, direccion_empresa, ciudad, correo, numero_contacto });
       if (response.data ) {
         console.log(response.data)
       } 
