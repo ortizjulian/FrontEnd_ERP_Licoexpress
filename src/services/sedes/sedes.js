@@ -19,7 +19,31 @@ function useSedes() {
     }
   };
 
-  return { getSedes };
+  const createSede = async (sedeData) => {
+    try {
+      const response = await API('api/products', 'POST', sedeData);
+      if (response && response.data) {
+        console.log(response.data);
+      } else {
+        console.error("Error al crear sede: Respuesta inesperada");
+      }
+    } catch (error) {
+      console.error("Error al crear sede: ", error);
+    }
+  };
+
+  const deleteSede = async (id) => {
+    try {
+      const response = await API(`api/products/${id}`, 'DELETE');
+      if (response.data) {
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error("Error al eliminar sede: ", error);
+    }
+  };
+
+  return { getSedes, deleteSede, createSede };
 }
 
 
