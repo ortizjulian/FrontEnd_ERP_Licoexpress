@@ -6,7 +6,7 @@ import useUsers from 'services/users/users';
 import UserTable from './UsersTable';
 import useSedes from 'services/sedes/sedes';
 import { roles } from './roles-data';
-import { MenuItem, Select } from '../../../../node_modules/@mui/material/index';
+import { MenuItem, Select,InputLabel } from '../../../../node_modules/@mui/material/index';
 
 function createData(id, correo, contrasena,rol,sede) {
     return { id, correo, contrasena, rol, sede };
@@ -26,8 +26,8 @@ const UsersPage = () => {
 
     const [correo, setCorreo] = useState('');
     const [contrasena, setContrasena] = useState('');
-    const [selectedSede, setSelectedSede] = useState('');
-    const [rol, setRol] = useState('');
+    const [selectedSede, setSelectedSede] = useState();
+    const [rol, setRol] = useState();
 
     const [users, setUsers] = useState([]);
     const [sedes, setSedes] = useState([]);
@@ -134,12 +134,14 @@ const UsersPage = () => {
                                         onChange={(e) => setContrasena(e.target.value)}
                                         sx={{ mt: 2 }}
                                     />
+                                     <InputLabel style={{marginTop: '10px'}} id="rol-label">Seleccionar Rol</InputLabel>
                                      <Select
+                                        labelId="rol-label"
                                         label="Seleccionar Rol"
                                         value={rol}
                                         onChange={handleRolChange}
                                         fullWidth
-                                        sx={{ mt: 2 }}
+                                       
                                         >
                                         {roles.map((opcion) => (
                                             <MenuItem key={opcion} value={opcion}>
@@ -147,12 +149,14 @@ const UsersPage = () => {
                                             </MenuItem>
                                         ))}
                                     </Select>
+                                    <InputLabel style={{marginTop: '10px'}} id="sede-label">Seleccionar Sede</InputLabel>
                                     <Select
+                                    id="sede-label"
                                         label="Seleccionar Sede"
                                         value={selectedSede}
                                         onChange={handleSelectChange}
                                         fullWidth
-                                        sx={{ mt: 2 }}
+                          
                                         >
                                         {sedes.map((opcion) => (
                                             <MenuItem key={opcion.id} value={opcion.id}>
