@@ -25,7 +25,7 @@ const inventario = {
       id: 'total-inventario',
       title: 'Inventarios Totalizado',
       type: 'item',
-      url: '/inventario',
+      url: '/inventario-total',
       icon: icons.AppstoreAddOutlined
     }
   ]
