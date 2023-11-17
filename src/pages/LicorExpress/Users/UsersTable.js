@@ -92,7 +92,7 @@ UserTableHead.propTypes = {
 
 // ==============================|| Proveedor TABLE ||============================== //
 
-export default function UserTable({ rows }) {
+export default function UserTable({ rows ,getUsers}) {
     const [User] = useState('asc');
     const [UserBy] = useState('trackingNo');
     const [selected] = useState([]);
@@ -122,7 +122,7 @@ export default function UserTable({ rows }) {
 
     const [idUser, setUserId] = useState('');
 
-    const {getUsers, deleteUsers } = useUsers()
+    const { deleteUsers } = useUsers()
 
     const eliminarUsuario = async () => {
         try {
