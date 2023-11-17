@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 
 import useLogin from 'services/login/login';
 
 // material-ui
-import { Button, FormHelperText, Grid,IconButton,InputAdornment, InputLabel,OutlinedInput, Stack} from '@mui/material';
+import { Button, FormHelperText, Grid,IconButton,InputAdornment, InputLabel,OutlinedInput, Stack,Snackbar} from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -15,13 +15,23 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { Alert } from '../../../../node_modules/@mui/material/index';
 
 // ============================|| FIREBASE - LOGIN ||============================ //
 
+const CustomAlert = ({ open, handleClose, severity }) => {
+  return (
+    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      <Alert elevation={6} variant="filled" onClose={handleClose} severity={severity}>
+        {"Falló el inicio de sesión"}
+      </Alert>
+    </Snackbar>
+  );
+};
 const AuthLogin = () => {
 
   const { login } = useLogin(); 
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -30,8 +40,15 @@ const AuthLogin = () => {
     event.preventDefault();
   };
 
+  const [alertOpen, setAlertOpen] = useState(false);
+
+  const handleAlertClose = () => {
+    setAlertOpen(false);
+  };
+
   return (
     <>
+     <CustomAlert open={alertOpen} handleClose={handleAlertClose} severity="error" />
       <Formik
         initialValues={{
           email: '',
@@ -47,8 +64,10 @@ const AuthLogin = () => {
             console.log(values)
             setStatus({ success: false });
             setSubmitting(false);
-            login(values.email,values.password)
-            
+            const {success} = await login(values.email,values.password)
+            if(!success){
+              setAlertOpen(true);
+            } 
             
           } catch (err) {
             setStatus({ success: false });

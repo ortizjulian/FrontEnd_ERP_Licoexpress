@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, Grid, CardMedia, Button, TextField, Modal, Box,MenuItem, Select,InputLabel } from '@mui/material';
 import useProveedores from 'services/proveedores/proveedores';
 import useTipos from 'services/tipos/tipos';
+import useLogin from 'services/login/login';
 
 
 const ProductoBox = ({ product , onDelete, onUpdate}) => {
   const { nombre, tipo, tamaño, imagen, precio_base, precio_venta, proveedor, id } = product;
 
+
+  const {isAdmin} = useLogin()
   //const { getProductos} = useProductos();
 
   const [isDeleting, setIsDeleting] = useState(false);
@@ -189,127 +192,131 @@ const ProductoBox = ({ product , onDelete, onUpdate}) => {
             </Typography>
           </Grid>
           <Grid item xs={12} container spacing={2}>
-          <Grid item xs={6}>
-            <Button
-                variant="outlined"
-                sx={deleteButtonStyle}
-                fullWidth
-                onClick={handleDelete}
-                disabled={isDeleting}
-                onMouseEnter={() => setIsDeleteHovered(true)}
-                onMouseLeave={() => setIsDeleteHovered(false)}
-              >
-                {isDeleting ? 'Eliminando...' : 'Eliminar'}
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            <Button
-                variant="outlined"
-                sx={updateButtonStyle}
-                fullWidth
-                onClick={createOpen}
-                disabled={isDeleting}
-                onMouseEnter={() => setIsUpdateHovered(true)}
-                onMouseLeave={() => setIsUpdateHovered(false)}
-              >
-                Actualizar
-            </Button>
-            <Modal
-              open={visibleCreate}
-              onClose={createClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Actualizar Producto
-                </Typography>
-                <TextField
-                  id="nombre"
-                  label="Nombre del producto"
-                  variant="standard"
-                  fullWidth
-                  value={nombreProducto}
-                  onChange={(e) => setNombreProducto(e.target.value)}
-                  sx={{ mt: 2 }}
-                />
-               
-                <TextField
-                  id="imagen"
-                  label="URL de la imagen"
-                  variant="standard"
-                  fullWidth
-                  value={imagenProducto}
-                  onChange={(e) => setImagenProducto(e.target.value)}
-                  sx={{ mt: 2 }}
-                />
+            {isAdmin() &&
+            <>
+                    <Grid item xs={6}>
+                      <Button
+                          variant="outlined"
+                          sx={deleteButtonStyle}
+                          fullWidth
+                          onClick={handleDelete}
+                          disabled={isDeleting}
+                          onMouseEnter={() => setIsDeleteHovered(true)}
+                          onMouseLeave={() => setIsDeleteHovered(false)}
+                        >
+                          {isDeleting ? 'Eliminando...' : 'Eliminar'}
+                      </Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Button
+                          variant="outlined"
+                          sx={updateButtonStyle}
+                          fullWidth
+                          onClick={createOpen}
+                          disabled={isDeleting}
+                          onMouseEnter={() => setIsUpdateHovered(true)}
+                          onMouseLeave={() => setIsUpdateHovered(false)}
+                        >
+                          Actualizar
+                      </Button>
+                      <Modal
+                        open={visibleCreate}
+                        onClose={createClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                      >
+                        <Box sx={style}>
+                          <Typography id="modal-modal-title" variant="h6" component="h2">
+                            Actualizar Producto
+                          </Typography>
+                          <TextField
+                            id="nombre"
+                            label="Nombre del producto"
+                            variant="standard"
+                            fullWidth
+                            value={nombreProducto}
+                            onChange={(e) => setNombreProducto(e.target.value)}
+                            sx={{ mt: 2 }}
+                          />
+                        
+                          <TextField
+                            id="imagen"
+                            label="URL de la imagen"
+                            variant="standard"
+                            fullWidth
+                            value={imagenProducto}
+                            onChange={(e) => setImagenProducto(e.target.value)}
+                            sx={{ mt: 2 }}
+                          />
 
-                <TextField
-                  id="tamaño"
-                  label="Tamaño"
-                  variant="standard"
-                  fullWidth
-                  value={tamañoProducto}
-                  onChange={(e) => setTamañoProducto(e.target.value)}
-                  sx={{ mt: 2 }}
-                />
-                <TextField
-                  id="precioBase"
-                  label="Precio base"
-                  variant="standard"
-                  fullWidth
-                  value={precioBaseProducto}
-                  onChange={(e) => setPrecioBaseProducto(e.target.value)}
-                  sx={{ mt: 2 }}
-                />
+                          <TextField
+                            id="tamaño"
+                            label="Tamaño"
+                            variant="standard"
+                            fullWidth
+                            value={tamañoProducto}
+                            onChange={(e) => setTamañoProducto(e.target.value)}
+                            sx={{ mt: 2 }}
+                          />
+                          <TextField
+                            id="precioBase"
+                            label="Precio base"
+                            variant="standard"
+                            fullWidth
+                            value={precioBaseProducto}
+                            onChange={(e) => setPrecioBaseProducto(e.target.value)}
+                            sx={{ mt: 2 }}
+                          />
 
-                <TextField
-                  id="precioVenta"
-                  label="Precio de venta"
-                  variant="standard"
-                  fullWidth
-                  value={precioVentaProducto}
-                  onChange={(e) => setPrecioVentaProducto(e.target.value)}
-                  sx={{ mt: 2 }}
-                />
-           
-                 <InputLabel style={{marginTop: '10px'}} id="proveedor-label">Seleccionar Proveedor</InputLabel>
-                                     <Select
-                                        labelId="proveedor-label"
-                                        label="Seleccionar Proveedor"
-                                        value={proveedorProducto}
-                                        onChange={handleProoveedorChange}
-                                        fullWidth
-                                       
-                                        >
-                                        {proveedores.map((opcion) => (
-                                            <MenuItem key={opcion} value={opcion.id}>
-                                            {opcion.nombre_empresa}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
+                          <TextField
+                            id="precioVenta"
+                            label="Precio de venta"
+                            variant="standard"
+                            fullWidth
+                            value={precioVentaProducto}
+                            onChange={(e) => setPrecioVentaProducto(e.target.value)}
+                            sx={{ mt: 2 }}
+                          />
+                    
+                          <InputLabel style={{marginTop: '10px'}} id="proveedor-label">Seleccionar Proveedor</InputLabel>
+                                              <Select
+                                                  labelId="proveedor-label"
+                                                  label="Seleccionar Proveedor"
+                                                  value={proveedorProducto}
+                                                  onChange={handleProoveedorChange}
+                                                  fullWidth
+                                                
+                                                  >
+                                                  {proveedores.map((opcion) => (
+                                                      <MenuItem key={opcion} value={opcion.id}>
+                                                      {opcion.nombre_empresa}
+                                                      </MenuItem>
+                                                  ))}
+                                              </Select>
 
-                                    <InputLabel style={{marginTop: '10px'}} id="tipo-label">Seleccionar Tipo</InputLabel>
-                                     <Select
-                                        labelId="tipo-label"
-                                        label="Seleccionar Tipo"
-                                        value={tipoProducto}
-                                        onChange={handleTipoChange}
-                                        fullWidth
-                                       
-                                        >
-                                        {tipos.map((opcion) => (
-                                            <MenuItem key={opcion} value={opcion.id}>
-                                            {opcion.descripcion}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                <Button variant="contained" color="primary" onClick={handleUpdate} sx={{ mt: 2 }}>
-                  Actualizar Producto
-                </Button>
-              </Box>
-            </Modal>
-          </Grid>
+                                              <InputLabel style={{marginTop: '10px'}} id="tipo-label">Seleccionar Tipo</InputLabel>
+                                              <Select
+                                                  labelId="tipo-label"
+                                                  label="Seleccionar Tipo"
+                                                  value={tipoProducto}
+                                                  onChange={handleTipoChange}
+                                                  fullWidth
+                                                
+                                                  >
+                                                  {tipos.map((opcion) => (
+                                                      <MenuItem key={opcion} value={opcion.id}>
+                                                      {opcion.descripcion}
+                                                      </MenuItem>
+                                                  ))}
+                                              </Select>
+                          <Button variant="contained" color="primary" onClick={handleUpdate} sx={{ mt: 2 }}>
+                            Actualizar Producto
+                          </Button>
+                        </Box>
+                      </Modal>
+                    </Grid>
+                    </>
+          }
           </Grid>
         </Grid>
       </CardContent>

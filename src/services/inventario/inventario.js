@@ -28,7 +28,7 @@ function useInventario() {
 
   const createRegistro = async (sede_id, producto_id,fecha_registro,lote,stock) => {
     try {
-       await API('api/inventories', 'POST', { sede_id, producto_id,fecha_registro,lote,stock });
+       await API('api/inventories/' +sede_id, 'POST', { sede_id, producto_id,fecha_registro,lote,stock });
     
       
     } catch (error) {

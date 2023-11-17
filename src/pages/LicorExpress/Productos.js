@@ -7,6 +7,7 @@ import { PlusCircleOutlined } from '@ant-design/icons';
 import useProductos from 'services/productos/productos';
 import useTipos from 'services/tipos/tipos';
 import useProveedores from 'services/proveedores/proveedores';
+import useLogin from 'services/login/login';
 
 
 const ProductsPage = () => {
@@ -136,6 +137,8 @@ const {getProveedores} = useProveedores();
     p: 4,
   };
 
+const {isAdmin} = useLogin()
+
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
       <Grid item xs={12} md={7} lg={12}>
@@ -144,9 +147,10 @@ const {getProveedores} = useProveedores();
             <Typography variant="h5">Catálogo de Productos</Typography>
           </Grid>
           <Grid justifyContent= 'space-between'>
+            {isAdmin() &&
             <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<PlusCircleOutlined />} onClick={createOpen}>
               Nuevo Producto
-            </Button>
+            </Button>}
             <Modal
               open={visibleCreate}
               onClose={createClose}

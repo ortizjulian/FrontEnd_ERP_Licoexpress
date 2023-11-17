@@ -8,6 +8,7 @@ import { MinusCircleOutlined, RedoOutlined } from '@ant-design/icons';
 
 // material-ui
 import { Box, Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, Modal, Typography, TextField } from '@mui/material';
+import useLogin from 'services/login/login';
 
 function descendingComparator(a, b, ProveedorBy) {
     if (b[ProveedorBy] < a[ProveedorBy]) {
@@ -142,7 +143,7 @@ export default function ProveedorTable({ rows, obtenerProveedores }) {
 
     const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
 
-
+const {isAdmin} = useLogin()
 
     const style = {
         position: 'absolute',
@@ -222,12 +223,13 @@ export default function ProveedorTable({ rows, obtenerProveedores }) {
                                     <TableCell align="right">{row.ciudad}</TableCell>
                                     <TableCell align="right">{row.correo}</TableCell>
                                     <TableCell align="left">{row.numero_contacto}</TableCell>
+                                    {isAdmin() &&
                                     <TableCell align="right">
                                         <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<MinusCircleOutlined />} onClick={() => deleteOpen(row.id)}>
                                             Eliminar
                                         </Button>
                                     </TableCell>
-
+                                    }
                                     <Modal
                                         open={visibleDelete}
                                         onClose={deleteClose}
@@ -246,12 +248,13 @@ export default function ProveedorTable({ rows, obtenerProveedores }) {
                                             </Button>
                                         </Box>
                                     </Modal>
+                                    {isAdmin()&&
                                     <TableCell align="right">
                                         <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<RedoOutlined />} onClick={updateOpen}>
                                             Actualizar
                                         </Button>
                                     </TableCell>
-
+                        }
                                     <Modal
                                         open={visibleUpdate}
                                         onClose={updateClose}

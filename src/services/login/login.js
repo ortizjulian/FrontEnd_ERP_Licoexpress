@@ -24,16 +24,21 @@ function useLogin() {
   const login = async (correo, contrasena) => {
     try {
       const response = await API('api/user/login', 'POST', { correo, contrasena });
-      if (response.data) {
+      
+      if (response.status)
+      {
+        if (response.status === 200) {
         const jsonString = JSON.stringify(response.data);
 
         localStorage.setItem('token', jsonString);
       
         navigate('/dashboard');
+        return { success: true, message: 'Inicio de sesión exitoso' };
       }
-      
+      }
+      return { success: false, message: 'Falló el inicio de sesión' };
     } catch (error) {
-      alert("Error")
+      return { success: false, message: 'Falló el inicio de sesión' };
 
     }
   };

@@ -4,6 +4,7 @@ import MainCard from 'components/MainCard';
 import ProveedorTable from './ProveedoresTabla';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import useProveedores from 'services/proveedores/proveedores';
+import useLogin from 'services/login/login';
 
 function createData(id, nombre_empresa, responsable, numero_registro, direccion_empresa, ciudad, correo, numero_contacto) {
     return { id, nombre_empresa, responsable, numero_registro, direccion_empresa, ciudad, correo, numero_contacto  };
@@ -72,6 +73,7 @@ const ProveedoresPage = () => {
         p: 4,
     };
 
+    const {isAdmin } = useLogin()
     return (
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>
             <Grid item xs={12} md={7} lg={12}>
@@ -79,6 +81,7 @@ const ProveedoresPage = () => {
                     <Grid item>
                         <Typography variant="h5">Informacion de los Proveedores</Typography>
                     </Grid>
+                    {isAdmin() &&
                     <Grid item xs={12} md={4} lg={6}>
                         <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2}>
                             <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<PlusCircleOutlined />} onClick={createOpen}>
@@ -164,10 +167,12 @@ const ProveedoresPage = () => {
                             </Modal>
                         </Stack>
                     </Grid>
+                    }
                 </Grid>
+
                 <MainCard sx={{ mt: 2 }} content={false}>
                     <ProveedorTable rows= {rows} obtenerProveedores={obtenerProveedores}/>
-                </MainCard>
+                </MainCard> 
             </Grid>
         </Grid>
     );
