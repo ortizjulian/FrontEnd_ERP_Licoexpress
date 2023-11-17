@@ -19,9 +19,9 @@ function useSedes() {
     }
   };
 
-  const createSede = async (sedeData) => {
+  const createSede = async (nombre, ciudad, direccion, nombre_admin, telefono_admin, contacto_admin) => {
     try {
-      const response = await API('api/products', 'POST', sedeData);
+      const response = await API('api/locations', 'POST', { nombre, ciudad, direccion, nombre_admin, telefono_admin, contacto_admin });
       if (response && response.data) {
         console.log(response.data);
       } else {
@@ -34,7 +34,7 @@ function useSedes() {
 
   const deleteSede = async (id) => {
     try {
-      const response = await API(`api/products/${id}`, 'DELETE');
+      const response = await API('api/locations/'+id, 'DELETE');
       if (response.data) {
         console.log(response.data);
       }

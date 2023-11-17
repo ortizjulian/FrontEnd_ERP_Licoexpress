@@ -11,7 +11,7 @@ function createData(id, nombre, ciudad, direccion, nombre_admin, contacto_admin,
 }
 
 const SedesPage = () => {
-    const { getSedes } = useSedes();
+    const { getSedes, createSede } = useSedes();
     const [visibleCreate, setVisibleCreate] = useState(false);
 
     const createOpen = () => {
@@ -27,9 +27,6 @@ const SedesPage = () => {
     const [nombre_adminSede, setadministradorSede] = useState('');
     const [contacto_adminSede, setContactoSede] = useState('');
     const [telefono_adminSede, setTelefonoSede] = useState('');
-
-
-
     const [sedes, setSedes] = useState([]);
 
     const obtenerSedes = async () => {
@@ -59,6 +56,23 @@ const SedesPage = () => {
 
     const crearSede = async () => {
         try {
+            var aux = await createSede(nombreSede, ciudadSede, direccionSede, nombre_adminSede, contacto_adminSede, telefono_adminSede );
+            obtenerSedes();
+            createClose();
+            setNombreSede('');
+            setCiudadSede('');
+            setDireccionSede('');
+            setadministradorSede('');
+            setContactoSede('');
+            setTelefonoSede('');
+            console.log(aux);
+        } catch (error) {
+            console.error("Error al crear sede: " + error);
+        }
+    };
+    /*
+    const crearSede = async () => {
+        try {
             await createSede({
                 nombre: nombreSede,
                 ciudad: ciudadSede,
@@ -78,7 +92,7 @@ const SedesPage = () => {
         } catch (error) {
             console.error("Error al crear sede: " + error);
         }
-    };
+    };*/
 
     const style = {
         position: 'absolute',
@@ -175,7 +189,7 @@ const SedesPage = () => {
                     </Grid>
                 </Grid>
                 <MainCard sx={{ mt: 2 }} content={false}>
-                    <SedesTabla rows={rows} />
+                    <SedesTabla rows={rows} obtenerSedes={obtenerSedes} />
                 </MainCard>
             </Grid>
         </Grid>
