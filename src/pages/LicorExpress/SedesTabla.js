@@ -89,6 +89,11 @@ const SedesTabla = ({ rows, obtenerSedes }) => {
                                 </Button>
                             </Box>
                         </Modal>
+                        <TableCell>
+                            <Button variant="primary" color="#2089FF" onClick={() => deleteOpen(row.id)}>
+                                Actualizar
+                            </Button>
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>

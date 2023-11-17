@@ -132,9 +132,13 @@ export default function ProveedorTable({ rows, obtenerProveedores }) {
     const updateOpen = () => { setVisibleUpdate(true) };
     const updateClose = () => { setVisibleUpdate(false) };
 
-    const [nombreProveedor, setNombreProveedor] = useState('');
+    const [nombreempresaProveedor, setNombreempresaProveedor] = useState('');
+    const [responsableProveedor, setResponsableProveedor] = useState('');
+    const [numeroregistroProveedor, setNumeroregistroProveedor] = useState('');
+    const [direccionempresaProveedor, setDireccionempresaProveedor] = useState('');
+    const [ciudadProveedor, setCiudadProveedor] = useState('');
     const [correoProveedor, setCorreoProveedor] = useState('');
-    const [numeroContacto, setNumeroContacto] = useState('');
+    const [numerocontactoProveedor, setNumerocontactoProveedor] = useState('');
 
     const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
 
@@ -259,32 +263,68 @@ export default function ProveedorTable({ rows, obtenerProveedores }) {
                                                 Actualizar Informacion de un Proveedor
                                             </Typography>
                                             <TextField
-                                                id="nombre"
-                                                label="Nombre del proveedor"
-                                                variant="standard"
-                                                fullWidth
-                                                value={nombreProveedor}
-                                                onChange={(e) => setNombreProveedor(e.target.value)}
-                                                sx={{ mt: 2 }}
-                                            />
-                                            <TextField
-                                                id="correo"
-                                                label="Correo electrónico"
-                                                variant="standard"
-                                                fullWidth
-                                                value={correoProveedor}
-                                                onChange={(e) => setCorreoProveedor(e.target.value)}
-                                                sx={{ mt: 2 }}
-                                            />
-                                            <TextField
-                                                id="numero"
-                                                label="Número de contacto"
-                                                variant="standard"
-                                                fullWidth
-                                                value={numeroContacto}
-                                                onChange={(e) => setNumeroContacto(e.target.value)}
-                                                sx={{ mt: 2 }}
-                                            />
+                                        id="nombre"
+                                        label="Nombre de la empresa"
+                                        variant="standard"
+                                        fullWidth
+                                        value={nombreempresaProveedor}
+                                        onChange={(e) => setNombreempresaProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                    <TextField
+                                        id="responsable"
+                                        label="nombre del responsable"
+                                        variant="standard"
+                                        fullWidth
+                                        value={responsableProveedor}
+                                        onChange={(e) => setResponsableProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                    <TextField
+                                        id="numero registro"
+                                        label="Numero de Registro"
+                                        variant="standard"
+                                        fullWidth
+                                        value={numeroregistroProveedor}
+                                        onChange={(e) => setNumeroregistroProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                    <TextField
+                                        id="direccion"
+                                        label="Direccion de la empresa"
+                                        variant="standard"
+                                        fullWidth
+                                        value={direccionempresaProveedor}
+                                        onChange={(e) => setDireccionempresaProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                    <TextField
+                                        id="ciudad"
+                                        label="Ciudad"
+                                        variant="standard"
+                                        fullWidth
+                                        value={ciudadProveedor}
+                                        onChange={(e) => setCiudadProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                    <TextField
+                                        id="correo"
+                                        label="Correo electrónico"
+                                        variant="standard"
+                                        fullWidth
+                                        value={correoProveedor}
+                                        onChange={(e) => setCorreoProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
+                                    <TextField
+                                        id="numero"
+                                        label="Número de contacto"
+                                        variant="standard"
+                                        fullWidth
+                                        value={numerocontactoProveedor}
+                                        onChange={(e) => setNumerocontactoProveedor(e.target.value)}
+                                        sx={{ mt: 2 }}
+                                    />
                                             <Button variant="contained" color="primary" sx={{ mt: 2 }}>
                                                 Actualizar
                                             </Button>

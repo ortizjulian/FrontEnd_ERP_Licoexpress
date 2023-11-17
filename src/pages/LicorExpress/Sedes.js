@@ -56,7 +56,7 @@ const SedesPage = () => {
 
     const crearSede = async () => {
         try {
-            var aux = await createSede(nombreSede, ciudadSede, direccionSede, nombre_adminSede, contacto_adminSede, telefono_adminSede );
+            var aux = await createSede(nombreSede, ciudadSede, direccionSede, nombre_adminSede, contacto_adminSede, telefono_adminSede);
             obtenerSedes();
             createClose();
             setNombreSede('');
@@ -104,7 +104,7 @@ const SedesPage = () => {
         border: '2px solid #000',
         boxShadow: 24,
         p: 4,
-      };
+    };
 
     return (
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>
@@ -113,9 +113,9 @@ const SedesPage = () => {
                     <Grid item>
                         <Typography variant="h5">Sedes</Typography>
                     </Grid>
-                    <Grid item xs={12} md={4} lg={6}>
+                    <Grid justifyContent= 'space-between'>
                         <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<PlusCircleOutlined />} onClick={createOpen}>
-                            Nueva Sede
+                        Nueva Sede
                         </Button>
                         <Modal
                             open={visibleCreate}

@@ -82,7 +82,7 @@ const ProveedoresPage = () => {
                     <Grid item xs={12} md={4} lg={6}>
                         <Stack direction="row" alignItems="center" justifyContent="flex-end" spacing={2}>
                             <Button size="small" variant="contained" sx={{ textTransform: 'capitalize' }} startIcon={<PlusCircleOutlined />} onClick={createOpen}>
-                                Nuevo
+                                Nuevo Proveedor
                             </Button>
                             <Modal
                                 open={visibleCreate}
