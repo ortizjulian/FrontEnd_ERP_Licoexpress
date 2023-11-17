@@ -31,6 +31,18 @@ function useProductos() {
     }
   };
   
+  const updateProducto = async (id, productoData) => {
+    try {
+      const response = await API(`api/products/${id}`, 'PUT', productoData);
+      if (response && response.data) {
+        console.log(response.data);
+      } else {
+        console.error("Error al actualizar producto: Respuesta inesperada");
+      }
+    } catch (error) {
+      console.error("Error al actualizar producto: ", error);
+    }
+  };
 
   const deleteProducto = async (id) => {
     try {
@@ -43,7 +55,7 @@ function useProductos() {
     }
   };
 
-  return { getProductos, createProducto, deleteProducto };
+  return { getProductos, createProducto, deleteProducto, updateProducto };
 }
 
 export default useProductos;

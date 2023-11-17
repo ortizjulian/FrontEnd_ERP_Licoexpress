@@ -10,7 +10,7 @@ import SamplePage from 'pages/extra-pages/SamplePage';
 import ProveedoresPage from 'pages/LicorExpress/Proveedores';
 import ProductsPage from 'pages/LicorExpress/Productos';
 import SedesPage from 'pages/LicorExpress/Sedes';
-import InventarioPage from 'pages/LicorExpress/Inventario'; 
+import InventarioPage from 'pages/LicorExpress/Inventario/Inventarios'; 
 import UsersPage from 'pages/LicorExpress/Users/Users'; 
 import useLogin from 'services/login/login';
 
